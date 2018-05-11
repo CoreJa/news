@@ -1,17 +1,21 @@
 package com.corechan.news.controller;
 
 import com.corechan.news.common.Status;
+import com.corechan.news.common.config.DBDataConfig;
 import com.corechan.news.dao.DataDao;
 import com.corechan.news.entity.Data;
 import com.corechan.news.service.DBService;
 import com.corechan.news.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletConfig;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +26,21 @@ import java.util.List;
 public class DBController {
     private final DBService dbService;
     private final StatisticService statisticService;
+    private final DBDataConfig dbDataConfig;
 
+    private static String DB_HOME = "/";
+
+    @PostConstruct
+    public void init() throws FileNotFoundException {
+        DB_HOME = ResourceUtils.getURL(dbDataConfig.getDbHome()).getPath();
+
+    }
 
     @Autowired
-    public DBController(DBService dbService, StatisticService statisticService) {
+    public DBController(DBService dbService, StatisticService statisticService, DBDataConfig dbDataConfig) {
         this.dbService = dbService;
         this.statisticService = statisticService;
+        this.dbDataConfig = dbDataConfig;
     }
 
     @RequestMapping(value = "/importNewsInto", method = RequestMethod.GET)
@@ -42,7 +55,7 @@ public class DBController {
             status.setMsg("请联系i@corechan.cn 陈睿 李童 阳申湘 江桥并使用密钥导入新闻与训练结果到数据库，tel:15127820236");
             return status;
         }
-        status.setStatus(dbService.importInto(news, THETA, img));
+        status.setStatus(dbService.importInto(DB_HOME + news, DB_HOME + THETA, DB_HOME + img));
         return status;
     }
 

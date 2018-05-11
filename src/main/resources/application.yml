@@ -7,6 +7,8 @@ server:
       cookie:
         max-age: 7D
         http-only: true
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   data:
     mongodb:
@@ -19,3 +21,15 @@ spring:
     cache:
       cachecontrol:
         max-age: 7D
+    static-locations: classpath:static/,file:static/
+  http:
+    encoding:
+      charset: UTF-8
+  config:
+    location: classpath:application.yml,file:application.yml
+
+data:
+  db-home: static/DBData
+  net-news-data: net_news_data.txt
+  img: img.txt
+  theta: THETA.txt

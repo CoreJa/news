@@ -25,7 +25,7 @@
 /.nb-gradle/
 
 /.mvn
-/.idea
+/.idea/
 /*.txt
 /src/test
-src/main/resources/static
+/static/

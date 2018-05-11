@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.BufferedReader;
@@ -18,7 +20,13 @@ import java.util.List;
 
 @EnableSwagger2
 @SpringBootApplication()
-public class NewsApplication {
+public class NewsApplication { // extends SpringBootServletInitializer {
+
+    //打包为war
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        return builder.sources(NewsApplication.class);
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(NewsApplication.class, args);
