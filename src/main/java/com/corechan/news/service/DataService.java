@@ -40,6 +40,7 @@ public class DataService {
     public List<Data> randomData(Integer number) {
         Set<Integer> randoms = new HashSet<>();
         List<Data> dataList = new ArrayList<>();
+        number=Math.min(number,randomTop300Data.size());
         while (randoms.size() < number) {
             Integer random = (int) (Math.random() * randomTop300Data.size());
             if (!randoms.contains(random)) {

@@ -22,12 +22,14 @@ public class RecommendationController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Status<List<Data>> getRecommendation(HttpSession session, @RequestParam(defaultValue = "0") Integer page) {
+    public Status<List<Data>> getRecommendation(HttpSession session,
+                                                @RequestParam(defaultValue = "0") Integer page,
+                                                @RequestParam(defaultValue = "20") Integer size) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null)
             throw new UnLoginException();
         Status<List<Data>> status = new Status<>();
-        status.setData(recommendationService.getRecommendation(userId, page));
+        status.setData(recommendationService.getRecommendation(userId, page, size));
         if (status.getData() == null) {
             status.setStatus(Status.StatusCode.preferenceNotExist);
             return status;
