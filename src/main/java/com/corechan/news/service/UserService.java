@@ -67,7 +67,7 @@ public class UserService {
         return user;
     }
 
-    public User getUser(String userId) {
+    private User getUser(String userId) {
         if (userDao.findById(userId).isPresent())
             return userDao.findById(userId).get();
         else return null;

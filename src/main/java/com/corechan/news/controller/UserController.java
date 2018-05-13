@@ -7,7 +7,10 @@ import com.corechan.news.entity.User;
 import com.corechan.news.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.support.RequestContext;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @CrossOrigin(allowCredentials = "true")
@@ -34,11 +37,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    Status login(@RequestParam String userId, @RequestParam String password, HttpSession session) {
+    Status login(@RequestParam String userId, @RequestParam String password, HttpServletRequest request) {
+        HttpSession session =request.getSession();
         Status status = new Status<>();
         status.setStatus(userService.login(userId, password));
-        if (status.getStatus() == Status.StatusCode.success)
+        if (status.getStatus() == Status.StatusCode.success) {
+            if(!session.isNew()){
+                session.invalidate();
+                session=request.getSession(true);
+            }
             session.setAttribute("userId", userId);
+            session.setMaxInactiveInterval(24 * 3600 * 7);
+        }
         return status;
     }
 
@@ -50,14 +60,15 @@ public class UserController {
         return status;
     }
 
-    @RequestMapping(value = "/logout",method = RequestMethod.POST)
-    Status logout(HttpSession session){
-        Status status =new Status();
-        if(session.getAttribute("userId")==null){
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    Status logout(HttpSession session) {
+        Status status = new Status();
+        if (session.getAttribute("userId") == null) {
             throw new UnLoginException();
         }
-        session.setMaxInactiveInterval(0);
         session.removeAttribute("userId");
+        session.setMaxInactiveInterval(0);
+        session.invalidate();
         status.setStatus(Status.StatusCode.success);
         return status;
     }
