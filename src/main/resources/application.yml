@@ -29,7 +29,7 @@ spring:
     location: classpath:application.yml,file:application.yml
 
 data:
-  db-home: static/DBData
+  db-home: static/DBData/
   net-news-data: net_news_data.txt
   img: img.txt
   theta: THETA.txt

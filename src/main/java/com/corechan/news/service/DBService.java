@@ -2,7 +2,9 @@ package com.corechan.news.service;
 
 import com.corechan.news.common.Status;
 import com.corechan.news.dao.DataDao;
+import com.corechan.news.dao.UserDao;
 import com.corechan.news.entity.Data;
+import com.corechan.news.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +15,22 @@ import java.util.List;
 @Service
 public class DBService {
     private final DataDao dataDao;
+    private final UserDao userDao;
+    private final DataService dataService;
 
     @Autowired
-    public DBService(DataDao dataDao) {
+    public DBService(DataDao dataDao, UserDao userDao, DataService dataService) {
         this.dataDao = dataDao;
+        this.userDao = userDao;
+        this.dataService = dataService;
     }
 
     public Status.StatusCode importInto(String news, String THETA, String img) throws IOException {
         dataDao.deleteAll();
-
+        List<User> users = userDao.findAll();
+        for (User user: users) {
+            user.setPreference(new ArrayList<>());
+        }
         BufferedReader newsReader = new BufferedReader(new InputStreamReader(new FileInputStream(news), "UTF-8"));
         BufferedReader THETAReader = new BufferedReader(new InputStreamReader(new FileInputStream(THETA), "UTF-8"));
         BufferedReader imgReader;
@@ -105,6 +114,8 @@ public class DBService {
             imgReader.close();
         }
         System.out.println("共导入" + cnt + "条数据");
+        dataService.init();
+        System.out.println("已重置randomTop300Data");
         return Status.StatusCode.success;
     }
 }

@@ -23,8 +23,9 @@ public class DataService {
     }
 
     public List<Data> data(Integer page, Integer size) {
+        int listSize = dataDao.findById(0).get().getList().size();
         List<Data> datas = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < listSize; i++) {
             datas.addAll(topicData(i, page, size));
         }
         return datas;
@@ -40,7 +41,7 @@ public class DataService {
     public List<Data> randomData(Integer number) {
         Set<Integer> randoms = new HashSet<>();
         List<Data> dataList = new ArrayList<>();
-        number=Math.min(number,randomTop300Data.size());
+        number = Math.min(number, randomTop300Data.size());
         while (randoms.size() < number) {
             Integer random = (int) (Math.random() * randomTop300Data.size());
             if (!randoms.contains(random)) {
