@@ -26,10 +26,13 @@ public class DBService {
     }
 
     public Status.StatusCode importInto(String news, String THETA, String img) throws IOException {
+        System.out.println("正在删除所有新闻...");
         dataDao.deleteAll();
         List<User> users = userDao.findAll();
+        System.out.println("正在重置用户偏好...");
         for (User user: users) {
             user.setPreference(new ArrayList<>());
+            userDao.save(user);
         }
         BufferedReader newsReader = new BufferedReader(new InputStreamReader(new FileInputStream(news), "UTF-8"));
         BufferedReader THETAReader = new BufferedReader(new InputStreamReader(new FileInputStream(THETA), "UTF-8"));
