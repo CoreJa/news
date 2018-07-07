@@ -58,13 +58,15 @@ public class DataService {
 
     public List<Data> topicData(Integer topic, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<Data> dataList = dataDao.findByTopicOrderByMaxRankDesc(topic, pageable).getContent();
+        List<Data> dataList = dataDao.findByTopicOrderByDateDesc(topic, pageable).getContent();
         List<Data> returnDataList = new ArrayList<>();
         for (Data data : dataList) {
-            int cutSize = 100;
-            cutSize = Math.min(data.getContent().length(), cutSize);
-            data.setContent(data.getContent().substring(0, cutSize));
-            returnDataList.add(data);
+            if (data.getContent().length()>=300) {
+                int cutSize = 100;
+                cutSize = Math.min(data.getContent().length(), cutSize);
+                data.setContent(data.getContent().substring(0, cutSize));
+                returnDataList.add(data);
+            }
         }
         return returnDataList;
     }

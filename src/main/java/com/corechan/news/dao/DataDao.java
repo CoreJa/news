@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 
 public interface DataDao extends MongoRepository<Data, Integer> {
-    Page<Data> findByTopicOrderByMaxRankDesc(Integer topic,Pageable pageable);
+    Page<Data> findByTopicOrderByDateDesc(Integer topic, Pageable pageable);
 }

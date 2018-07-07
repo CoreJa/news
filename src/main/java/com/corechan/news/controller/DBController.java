@@ -2,8 +2,6 @@ package com.corechan.news.controller;
 
 import com.corechan.news.common.Status;
 import com.corechan.news.common.config.DBDataConfig;
-import com.corechan.news.dao.DataDao;
-import com.corechan.news.entity.Data;
 import com.corechan.news.service.DBService;
 import com.corechan.news.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletConfig;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
-@ApiIgnore
+//@ApiIgnore
 @RequestMapping("")
 public class DBController {
     private final DBService dbService;
@@ -55,7 +50,22 @@ public class DBController {
             status.setMsg("请联系i@corechan.cn 陈睿 李童 阳申湘 江桥并使用密钥导入新闻与训练结果到数据库，tel:15127820236");
             return status;
         }
-        status.setStatus(dbService.importInto(DB_HOME + news, DB_HOME + THETA, DB_HOME + img));
+        status.setStatus(dbService.importNews(DB_HOME + news, DB_HOME + THETA, DB_HOME + img));
+        return status;
+    }
+
+    @RequestMapping(value = "/importTopicNewsInto", method = RequestMethod.GET)
+    public Status addTopicNews(@RequestParam(defaultValue = "data_clear.txt") String news,
+                               @RequestParam(defaultValue = "img_clear.txt") String img,
+                               @RequestParam(defaultValue = "rua") String key) throws IOException {
+        Status status = new Status();
+
+        if (!key.equals("baishikele")) {//eb6ef96dbd168096345d3a85b56ca4b587bac338906fe89f2738137fae18ae56|baishikele
+            status.setStatus(Status.StatusCode.fail);
+            status.setMsg("请联系i@corechan.cn 陈睿 李童 阳申湘 江桥并使用密钥导入新闻与训练结果到数据库，tel:15127820236");
+            return status;
+        }
+        status.setStatus(dbService.importTopicNews(DB_HOME, news, img));
         return status;
     }
 

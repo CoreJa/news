@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "Data")
-public class Data implements Comparable<Data>{
+public class Data implements Comparable<Data> {
     @Id
     private Long id;
     private List<Double> list;
@@ -19,11 +19,12 @@ public class Data implements Comparable<Data>{
     private Integer topic;
     private Double maxRank;
     private Double preferenceRank;
+    private String date;
 
     public Data() {
     }
 
-    public Data(Long id, List<Double> list, String title, String content, String url, String img, Integer topic, Double maxRank, Double preferenceRank) {
+    public Data(Long id, List<Double> list, String title, String content, String url, String img, Integer topic, Double maxRank, Double preferenceRank, String date) {
         this.id = id;
         this.list = list;
         this.title = title;
@@ -33,6 +34,7 @@ public class Data implements Comparable<Data>{
         this.topic = topic;
         this.maxRank = maxRank;
         this.preferenceRank = preferenceRank;
+        this.date = date;
     }
 
     public Long getId() {
@@ -110,5 +112,13 @@ public class Data implements Comparable<Data>{
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -1,13 +1,13 @@
 package com.corechan.news.entity;
 
-public class Log extends Data{
+public class Log extends Data {
     private Long time;
 
     public Log() {
     }
 
     public Log(Data data) {
-        super(data.getId(), data.getList(), data.getTitle(),data.getContent(),data.getUrl(),data.getImg(),data.getTopic(),data.getMaxRank(),data.getPreferenceRank());
+        super(data.getId(), data.getList(), data.getTitle(), data.getContent(), data.getUrl(), data.getImg(), data.getTopic(), data.getMaxRank(), data.getPreferenceRank(), data.getDate());
         this.time = System.currentTimeMillis();
     }
 
