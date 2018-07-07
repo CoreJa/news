@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,9 +22,8 @@ public class DataService {
     }
 
     public List<Data> data(Integer page, Integer size) {
-        int listSize = dataDao.findById(0).get().getList().size();
         List<Data> datas = new ArrayList<>();
-        for (int i = 0; i < listSize; i++) {
+        for (int i = 0; i < getTopicNumbers(); i++) {
             datas.addAll(topicData(i, page, size));
         }
         return datas;
@@ -61,12 +59,10 @@ public class DataService {
         List<Data> dataList = dataDao.findByTopicOrderByDateDesc(topic, pageable).getContent();
         List<Data> returnDataList = new ArrayList<>();
         for (Data data : dataList) {
-            if (data.getContent().length()>=300) {
-                int cutSize = 100;
-                cutSize = Math.min(data.getContent().length(), cutSize);
-                data.setContent(data.getContent().substring(0, cutSize));
-                returnDataList.add(data);
-            }
+            int cutSize = 100;
+            cutSize = Math.min(data.getContent().length(), cutSize);
+            data.setContent(data.getContent().substring(0, cutSize));
+            returnDataList.add(data);
         }
         return returnDataList;
     }
@@ -75,5 +71,9 @@ public class DataService {
         if (dataDao.findById(newsId).isPresent()) {
             return dataDao.findById(newsId).get();
         } else return null;
+    }
+
+    public Integer getTopicNumbers() {
+        return dataDao.findById(0).get().getList().size();
     }
 }
