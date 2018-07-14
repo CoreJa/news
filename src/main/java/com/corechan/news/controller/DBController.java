@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 
 @RestController
-//@ApiIgnore
+@ApiIgnore
 @RequestMapping("")
 public class DBController {
     private final DBService dbService;
