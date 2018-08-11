@@ -73,7 +73,10 @@ public class DataService {
         } else return null;
     }
 
-    public Integer getTopicNumbers() {
-        return dataDao.findById(0).get().getList().size();
+    private Integer getTopicNumbers() {
+        if (dataDao.findById(0).isPresent()) {
+            return dataDao.findById(0).get().getList().size();
+        }else
+            return 0;
     }
 }
