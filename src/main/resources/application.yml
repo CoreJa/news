@@ -27,6 +27,11 @@ spring:
       charset: UTF-8
   config:
     location: classpath:application.yml,file:application.yml
+  mail:
+    host: smtp.qq.com
+    username: robot@corechan.cn
+    password: wppnejlohwtpgfaa
+    default-encoding: UTF-8
 
 data:
   db-home: static/DBData/
